@@ -24,7 +24,7 @@ class hPer:
     Reference for Mass transformations: Roquette et al. 2021 Appendix A
     ---
     Usage:
-        hPer = spin.ObservedDatasets.hPer()
+        hPer = fire.ObservedDatasets.hPer()
     ---        
     LAST UPDATE: 
         21 July 2021
@@ -57,7 +57,7 @@ class NGC2264:
     ----
     
     Usage:
-        ngc2264 = spin.ObservedDatasets.NGC2264()
+        ngc2264 = fire.ObservedDatasets.NGC2264()
   
     ----
     
@@ -98,7 +98,7 @@ class USco:
     ----
     
     Usage:
-        USco = spin.ObservedDatasets.USco()
+        USco = fire.ObservedDatasets.USco()
   
     ----
         
@@ -134,7 +134,7 @@ class Praesepe:
     ----
     
     Usage:
-        praesepe = spin.ObservedDatasets.Praesepe()
+        praesepe = fire.ObservedDatasets.Praesepe()
   
     -----
     
@@ -163,7 +163,7 @@ class Pleiades:
     ----
     
     Usage:
-        praesepe = spin.ObservedDatasets.Praesepe()
+        praesepe = fire.ObservedDatasets.Praesepe()
   
     -----
     
@@ -194,7 +194,7 @@ class NGC6811:
     ----
     
     Usage:
-        praesepe = spin.ObservedDatasets.Praesepe()
+        praesepe = fire.ObservedDatasets.Praesepe()
   
     -----
     

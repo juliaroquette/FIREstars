@@ -16,7 +16,7 @@ in the model, see setailed notes in SpinEvolutionModel.ipynb
 """
 import numpy as np
 import astropy.units as u
-from spin.StarEvolution import BHAC15_MassTrack 
+from fire.StarEvolution import BHAC15_MassTrack 
 from scipy.interpolate import UnivariateSpline 
 from scipy.interpolate import interp1d
 from astropy.constants import G
@@ -418,7 +418,7 @@ class SpinEvolutionCode:
         else:
             time = np.array(time)
         if bool(fuv):
-            from spin.FUVfunctions import DiskWithFUV
+            from fire.FUVfunctions import DiskWithFUV
             disk = DiskWithFUV()
             get_tauD = lambda x: disk.get_tauD(x, fuv, tau_vis=tau_vis)
         elif bool(tau_d):

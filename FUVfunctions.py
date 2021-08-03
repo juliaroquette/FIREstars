@@ -16,8 +16,8 @@ from astropy import units as u
 
 
  # define the color-table and a normalization used for FUV           
-cmapFUV = LinearSegmentedColormap.from_list('mycmap', [(0.0, 'lavender'),
-                                                      (0.05, 'mediumpurple'),
+cmapFUV = LinearSegmentedColormap.from_list('mycmap', [
+                                                      (0.0, 'mediumpurple'),
                                                       (0.2, 'rebeccapurple'),
                                                       (0.38, 'forestgreen'),
                                                       (0.58, 'gold'),
@@ -100,7 +100,11 @@ class DiskWithFUV:
     def get_tauD_vs_FUV(self, mass, tau_vis=1.):
         """
         Select within the grid the tabulations for a mass and and 
-        viscous timescale
+        viscous timescale.
+        
+        Note that WKC20 models are estimated such as under no FUV influence, 
+        disks are dissipated in 10 Myr due to internal processes. Hence
+        I am appending tau_D=10 Myr at FUV=0 to these arrays. 
         
         ____
         input:
@@ -129,21 +133,28 @@ class DiskWithFUV:
                                (self.WKC20['Mstar_Msol'] == x[0])],  
                                self.WKC20['Tdisp_Myr'][select_tau_vis & 
                                (self.WKC20['Mstar_Msol'] ==  x[1])]))])
+        
     def get_tauD(self, mass, FUV, tau_vis=1.):
         self.get_tauD_vs_FUV(mass, tau_vis=tau_vis)
+        tauD_ = np.insert(self.tauD_Myr, 0, 10e6, axis=0)
+        FUV_ = np.insert(self.FUV, 0, 1, axis=0)
         if FUV in self.FUV: 
             return self.tauD_Myr[self.FUV == FUV][0]
         elif FUV > 1e4:
             return self.tauD_Myr[self.FUV == 1e4][0]
-        elif FUV > 0:
-            return 10**interp1d(np.log10(self.FUV),np.log10(self.tauD_Myr), 
+        elif FUV > 1:
+            #note that 
+            tauD = 10**interp1d(np.log10(FUV_), np.log10(tauD_), 
                                 kind='linear', bounds_error=False, 
                                 fill_value='extrapolate')(np.log10(FUV))
-        else: 
-            return 10**interp1d(np.log10(self.FUV),np.log10(self.tauD_Myr), 
-                                kind='linear', bounds_error=False, 
-                                fill_value='extrapolate')(np.log10(1e-10))
-       
+        elif FUV > 0: 
+            tauD = 10e6
+        elif FUV < 0:
+            print("I can't be negative!")
+            tauD = np.nan
+        else:
+            tauD = 10e6
+        return tauD
 class Parravano:
     """
     Based on Parravano et al. (2003) ApJ 584 797 [1], this class provides 
