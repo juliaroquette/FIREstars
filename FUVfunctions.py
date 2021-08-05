@@ -283,7 +283,8 @@ class Parravano:
     
     def localEUV(self, d):
         """
-        Return the Local FUV flux at a distance d (in parsec), in G0 units 
+        Return the Local EUV flux at a distance d (in parsec), in  
+        photons/s/cm2
         """        
         return self.localFlux(self.LEUV(), 
                               d).decompose(bases=[u.cm, u.ph, u.s])

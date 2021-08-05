@@ -83,7 +83,7 @@ class NGC2264:
         self.Prot = self.data['Adopted_Period'][valid]
         self.Mass = self.data['Mass_B15_Adopted'][valid]
         self.AV = self.data['Av_V14'][valid]
-        self.SpT = self.data['spt_V14']  [valid]  
+        self.SpT = self.data['spt_V14'][valid]  
         self.Disk = self.data['Disked'][valid]
         
 class USco:
