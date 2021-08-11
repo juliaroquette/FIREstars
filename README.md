@@ -70,20 +70,82 @@ spin = SpinEvolutionCode(1e6)
 time, omega = spin.dOmegadt(1.0, period2omega(8.), [10e6, 120e6, 4.5e9], tau_d=5e6, snapshot=true)
 ```
 
-**Example 3** `SpinEvolution` can also be used to estimate 
+### Further usage
+
+#### Break-up Limit:
+`SpinEvolution` can also be used to estimate the break-up limit as a function of age. 
+
+**Example 3:** breakup limit for a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> at the ages 10 Myr and 1Gyr.
 
 
-## `StarEvolution.py`
+ ```python 
+ spin = SpinEvolutionCode(1e6)
+ omega_crit = spin.get_BreakUp(1., [10e6, 1e9])
+```
+
+#### Saturation limit:
+
+Similarly, the saturation limit used in the wind-torque can also be tracked.
+
+**Example 4:** saturation limit for a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> at the ages 10 Myr and 1Gyr.
+
+```python 
+ spin = SpinEvolutionCode(1e6)
+ omega_sat = spin.get_SaturationLimit1., [10e6, 1e9])
+```
+
+## Rotational Evolution in Period-Mass space
+
+The class `SpinEvolutionCode` also includes a tool for calculating "isogyrochrones" (see notes in [jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/PeriodMassDiagrams.ipynb)). Isogyrochrones are rotation tracks in period-mass space, in which the rotation of stars in the whole mass range 0.1-1.3 <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> is evolved from a common set of initial conditions to a given age. 
+
+```python
+spin = SpinEvolutionCode(t0)
+mass, period = spin.isogyrochrone(initial_period, time, fuv=False, tau_d=False, 
+                                  dm=0.025, e=0.01, tau_vis=1.0, wind=True, 
+                                  structure=True, breakup=True, initial_age=False,
+                                  get_breakup_limit=False)
+```
+
+Where:
+
+- `initial_period` is the rotational period at the time `t0`.
+- `time` provide a single or multiple ages (in years) at which the isogyrochrones will be estimated. 
+- `fuv` set as `False` for a model ignoring the environment. Otherwise, `fuv` is the local far-ultraviolet flux in Habing flux units (<img src="https://render.githubusercontent.com/render/math?math=\rm{G}_0">).
+- `tau_vis` sets the viscous timescale in the disk-dissipation model (see notes in [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/FUV_TauD.ipynb)). Possible values are 1, 2 or 5 Myr. 
+- `initial_age` if `True`, includes the isogyrochrone ate the age `t0`.
+- `get_breakup_limit` if `True` returns an isogyrochrone with the break-up limit.
+- `tau_d` is set as `False` if using the keyword `fuv`. Otherwise, `tau_d` sets a common disk-lockig duration for all the stars in the isogyrochrone.
+- The remaining keywords are the same as in `dOmegadt`
+
+**Example 5:** Creates an isogyrochrone at the age of 15 Myrs, for stars with initial rotation of 8 d at an age of 1 Myr, which are evolving under an FUV-flux of 1,000<img src="https://render.githubusercontent.com/render/math?math=\rm{G}_0">. Using steps of <img src="https://render.githubusercontent.com/render/math?math=0.05\rm{M}_\odot"> and considering a disk with viscosity timescale of 1 Myr.
+
+```python
+spin = SpinEvolutionCode(1e6)
+mass, period = spin.isogyrochrone(8., 15e6, fuv=1000., dm=0.05, e=0.01, tau_vis=1.0)
+```
+
+------
+
+## Observational datasets:
+
+Roquette et al. (2021) compare the models implemented in this package with rolling-percentiles of observed datasets of rotation rates in open clusters. These datasets are processed in the module [ObservedDatasets.py](https://github.com/juliaroquette/FIRE/blob/main/ObservedDatasets.py). Each of the datasets is processed in a class with the name of the observed cluster. 
+
+- `hPer` 
 
 
-### `data/stellar_model/`
 
-## `ObservedDatasets.py`
+https://github.com/juliaroquette/FIRE/tree/main/data/observations
 
-## `FUVfunctions`
+[jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/PeriodMassDiagrams.ipynb)
 
-### `data/observations/`
+------
 
-### `data/disk_model/`
+## `FUVfunctions.py` module 
 
-## `jupyter/`
+The module
+
+------
+
+## `StarEvolution.py` module
+
+
