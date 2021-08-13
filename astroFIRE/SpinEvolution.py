@@ -15,10 +15,12 @@ in the model, see setailed notes in SpinEvolutionModel.ipynb
 """
 import numpy as np
 import astropy.units as u
-from fire.StarEvolution import BHAC15_MassTrack
+
 from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 from astropy.constants import G
+
+from astroFIRE.StarEvolution import BHAC15_MassTrack
 
 class SpinEvolutionCode:
     """

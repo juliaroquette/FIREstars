@@ -5,24 +5,23 @@ Created on Wed Jul 14 14:26:35 2021
 """
 import numpy as np
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+
 from matplotlib.colors import LinearSegmentedColormap
 from astropy.table import Table
 from scipy.interpolate import interp1d
-import matplotlib.pyplot as plt
 from astropy import units as u
 
-
-
  # define the color-table and a normalization used for FUV
-cmapFUV = LinearSegmentedColormap.from_list('mycmap', [
-                                                      (0.0, 'mediumpurple'),
-                                                      (0.2, 'rebeccapurple'),
-                                                      (0.38, 'forestgreen'),
-                                                      (0.58, 'gold'),
-                                                      (0.75, 'orange'),
-                                                      (0.8, 'tab:red'),
-                                                      (1.0, 'maroon')])
-normFUV = mpl.colors.Normalize(vmin=np.log10(1.7), vmax=5)
+ cmapFUV = LinearSegmentedColormap.from_list('mycmap', [
+     (0.0, 'mediumpurple'),
+     (0.2, 'rebeccapurple'),
+     (0.38, 'forestgreen'),
+     (0.58, 'gold'),
+     (0.75, 'orange'),
+     (0.8, 'tab:red'),
+     (1.0, 'maroon')])
+ normFUV = mpl.colors.Normalize(vmin=np.log10(1.7), vmax=5)
 
 def plotCmapFUV(**kargs):
     ax = None
@@ -153,6 +152,8 @@ class DiskWithFUV:
         else:
             tauD = 10e6
         return tauD
+
+
 class Parravano:
     """
     Based on Parravano et al. (2003) ApJ 584 797 [1], this class provides
@@ -286,4 +287,3 @@ class Parravano:
         """
         return self.localFlux(self.LEUV(),
                               d).decompose(bases=[u.cm, u.ph, u.s])
-
