@@ -5,11 +5,11 @@ Created on Wed Jul 21 13:25:10 2021
 
 @author: jroquette
 """
-
-import numpy as np
-from astropy.table import Table
-import pandas as pd
 import os
+import numpy as np
+import pandas as pd
+from astropy.table import Table
+
 datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            'data/observations/')     
  

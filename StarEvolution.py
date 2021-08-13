@@ -16,6 +16,7 @@ Version of 13th July 2021:
 """
 import numpy as np
 from astropy.table import Table
+from astropy import units as u
 
 class BHAC15_MassTrack:
     """
@@ -66,7 +67,7 @@ class BHAC15_MassTrack:
 
     ------------------------------------------------------------------------
     
-    [1] From BHAC15 Notes:
+    [1] Extracted from BHAC15 Notes:
     BHAC15 tracks and internal structure for brown dwarfs and low mass star 
     (0.075 Msun to 1.4 Msun)
 
@@ -126,6 +127,9 @@ class BHAC15_MassTrack:
         import os
         datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            'data/stellar_model/BHAC15/')
+        self.M_o = 1.99e33 << u.g
+        self.R_o = 6.96e10 << u.cm
+        self.I_o = 7e53 << u.g*(u.cm**2) 
         self.masses = np.array([0.075, 0.08, 0.09, 0.1, 0.2, 0.3, 0.4, 0.5, 
                                 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3,1.4])
         self.BHAC15 = {}
@@ -152,8 +156,9 @@ class BHAC15_MassTrack:
         valid=np.isfinite(self.BHAC15['M_Ms'])
         for key in self.BHAC15.keys():
             self.BHAC15[key]=np.array(self.BHAC15[key])[valid]
+        self.full = full
             
-    def getMassTrack(self, mass, full=False):
+    def getMassTrack(self, mass):
         if mass in self.masses:
             select_mass = (self.BHAC15['M_Ms'] == mass)
             self.Teff = self.BHAC15['Teff'][select_mass]
@@ -161,7 +166,7 @@ class BHAC15_MassTrack:
             self.Age = 10**self.BHAC15['log_t_yr'][select_mass]
             self.R = self.BHAC15['R_Rs'][select_mass]
             self.I = self.BHAC15['I_Is'][select_mass]
-            if bool(full):
+            if bool(self.full):
                 self.log_Li = self.BHAC15['Log_Li_Li0'][select_mass]
                 self.Tcentral = 10**self.BHAC15['logTc'][select_mass]
                 self.Rhocentral = 10**self.BHAC15['logROc'][select_mass]
@@ -197,7 +202,7 @@ class BHAC15_MassTrack:
             self.k2conv = interpolate('k2conv')     
             self.k2_2=self.k2conv**2+self.k2rad**2
             self.I=self.k2_2*self.Mass*(self.R**2)            
-            if bool(full):                
+            if bool(self.full):                
                 self.Lum = interpolate('L_Ls')
                 self.logg = interpolate('g')         
                 self.log_Li = interpolate('Log_Li_Li0')

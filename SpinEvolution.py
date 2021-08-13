@@ -190,7 +190,7 @@ class SpinEvolutionCode:
             << self.OMEGA_o
       
  
-    def dOmegadt(self, M, Omega0, t, tau_d=0, e=0.1, wind=True, 
+    def dOmegadt(self, M, Omega0, t, tau_d=0, e=0.01, wind=True, 
                  structure=True, snapshot=False, breakup=True):
         """
         __
