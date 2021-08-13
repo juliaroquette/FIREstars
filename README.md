@@ -1,9 +1,9 @@
-# Far-ultraviolet Irradiated Rotational Evolution model (FIRE) 
+# Far-ultraviolet Irradiated Rotational Evolution model (FIRE)
 
 **Author: Julia Roquette**
 
 
-This package, which is part of the research presented in Roquette et al. (2021), includes a compilation of tools for computing rotational evolution models of stars evolving under the irradiation of far-ultraviolet radiation. The package can be used to derive the rotational evolution of stars in the mass range 0.1-1.3<img src="https://render.githubusercontent.com/render/math?math=\rm{M}_\odot">. 
+This package, which is part of the research presented in Roquette et al. (2021), includes a compilation of tools for computing rotational evolution models of stars evolving under the irradiation of far-ultraviolet radiation. The package can be used to derive the rotational evolution of stars in the mass range 0.1-1.3<img src="https://render.githubusercontent.com/render/math?math=\rm{M}_\odot">.
 
 -----------
 
@@ -16,18 +16,18 @@ The model implemented here is based on three assumptions:
 
 2. *Internal Structure:* The internal structure of stars is described by the stellar evolution models of [Baraffe et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015A%26A...577A..42B/abstract). Tools for reading these models are implemented in [`StarEvolution.py`](https://github.com/juliaroquette/FIRE/blob/main/StarEvolution.py). See notes on REFERENCE.
 
-3. *Magnetised Winds*: At all ages, stars are subject to a wind-torque. The wind-torque adopted is the one by [Matt et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015ApJ...799L..23M/abstract). 
+3. *Magnetised Winds*: At all ages, stars are subject to a wind-torque. The wind-torque adopted is the one by [Matt et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015ApJ...799L..23M/abstract).
 
 ### Usage:
 
 
-```python 
-from fire.SpinEvolution import SpinEvolutionCode
+```python
+from astroFIRE.SpinEvolution import SpinEvolutionCode
 ```
 
 Initialize the class by providing an initial time for the model, `t0`, in years.
 
-```python 
+```python
 spin = SpinEvolutionCode(t0)
 ```
 
@@ -45,8 +45,8 @@ Where:
     - Otherwise if `snapshot=False`, `t` must be the final age in the model.
   - `tau_d` is the disk-locking duration (in years) set as zero as default.
   - `e` is a tolerance factor which defines the size of the time-step in foward-step Euler-method. For example, in the default `e=0.01`, the model is estimating using time-steps large enough to increase <img src="https://render.githubusercontent.com/render/math?math=\Omega(t)"> in 1% in each step.
-  -  `wind` turns on/off the wind-torque. 
-  -  `structure` turns on/off the structure term. 
+  -  `wind` turns on/off the wind-torque.
+  -  `structure` turns on/off the structure term.
   -  `snapshot` sets the way in which the model's outputs are returned:
     - If `snapshot=False` (default) the model will return pairs of <img src="https://render.githubusercontent.com/render/math?math=\Omega(t)"> and <img src="https://render.githubusercontent.com/render/math?math=t"> at each time-step required for running the model with a tolerance factor `e`.
     - If `snapshot=True`, <img src="https://render.githubusercontent.com/render/math?math=\Omega(t)"> and <img src="https://render.githubusercontent.com/render/math?math=t"> are returned only for pre-defined timesteps provided inputed in the array `t`.
@@ -56,16 +56,16 @@ Where:
 
 First, to transform the period of 8 d to <img src="https://render.githubusercontent.com/render/math?math=\Omega"> and vice-versa, [`SpinEvolution.py`](https://github.com/juliaroquette/FIRE/blob/main/SpinEvolution.py)  includes the functions `period2omega` and `omega2period`:
 
-```python 
-from fire.SpinEvolution import  SpinEvolutionCode, period2omega
+```python
+from astroFIRE.SpinEvolution import  SpinEvolutionCode, period2omega
 spin = SpinEvolutionCode(0.5e6)
 time, omega = spin.dOmegadt(1.0, period2omega(8.), [4.5e9], tau_d=5e6)
 ```
 
 **Example 2**: Rotational period of a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> star at the ages 10 Myr, 120 Myr and 4.5 Gyr, considering a disk-lifetime of 5 Myr and an initial rotational period of 8 d at the age 1 Myr.
 
-```python 
-from fire.SpinEvolution import  SpinEvolutionCode, period2omega
+```python
+from astroFIRE.SpinEvolution import  SpinEvolutionCode, period2omega
 spin = SpinEvolutionCode(1e6)
 time, omega = spin.dOmegadt(1.0, period2omega(8.), [10e6, 120e6, 4.5e9], tau_d=5e6, snapshot=true)
 ```
@@ -73,12 +73,12 @@ time, omega = spin.dOmegadt(1.0, period2omega(8.), [10e6, 120e6, 4.5e9], tau_d=5
 ### Further usage
 
 #### Break-up Limit:
-`SpinEvolution` can also be used to estimate the break-up limit as a function of age. 
+`SpinEvolution` can also be used to estimate the break-up limit as a function of age.
 
 **Example 3:** breakup limit for a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> at the ages 10 Myr and 1Gyr.
 
 
- ```python 
+ ```python
  spin = SpinEvolutionCode(1e6)
  omega_crit = spin.get_BreakUp(1., [10e6, 1e9])
 ```
@@ -89,19 +89,19 @@ Similarly, the saturation limit used in the wind-torque can also be tracked.
 
 **Example 4:** saturation limit for a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> at the ages 10 Myr and 1Gyr.
 
-```python 
+```python
  spin = SpinEvolutionCode(1e6)
  omega_sat = spin.get_SaturationLimit1., [10e6, 1e9])
 ```
 
 ## Rotational Evolution in Period-Mass space
 
-The class `SpinEvolutionCode` also includes a tool for calculating "isogyrochrones" (see notes in [jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/PeriodMassDiagrams.ipynb)). Isogyrochrones are rotation tracks in period-mass space, in which the rotation of stars in the whole mass range 0.1-1.3 <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> is evolved from a common set of initial conditions to a given age. 
+The class `SpinEvolutionCode` also includes a tool for calculating "isogyrochrones" (see notes in [jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/PeriodMassDiagrams.ipynb)). Isogyrochrones are rotation tracks in period-mass space, in which the rotation of stars in the whole mass range 0.1-1.3 <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> is evolved from a common set of initial conditions to a given age.
 
 ```python
 spin = SpinEvolutionCode(t0)
-mass, period = spin.isogyrochrone(initial_period, time, fuv=False, tau_d=False, 
-                                  dm=0.025, e=0.01, tau_vis=1.0, wind=True, 
+mass, period = spin.isogyrochrone(initial_period, time, fuv=False, tau_d=False,
+                                  dm=0.025, e=0.01, tau_vis=1.0, wind=True,
                                   structure=True, breakup=True, initial_age=False,
                                   get_breakup_limit=False)
 ```
@@ -109,9 +109,9 @@ mass, period = spin.isogyrochrone(initial_period, time, fuv=False, tau_d=False,
 Where:
 
 - `initial_period` is the rotational period at the time `t0`.
-- `time` provide a single or multiple ages (in years) at which the isogyrochrones will be estimated. 
+- `time` provide a single or multiple ages (in years) at which the isogyrochrones will be estimated.
 - `fuv` set as `False` for a model ignoring the environment. Otherwise, `fuv` is the local far-ultraviolet flux in Habing flux units (<img src="https://render.githubusercontent.com/render/math?math=\rm{G}_0">).
-- `tau_vis` sets the viscous timescale in the disk-dissipation model (see notes in [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/FUV_TauD.ipynb)). Possible values are 1, 2 or 5 Myr. 
+- `tau_vis` sets the viscous timescale in the disk-dissipation model (see notes in [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/FUV_TauD.ipynb)). Possible values are 1, 2 or 5 Myr.
 - `initial_age` if `True`, includes the isogyrochrone ate the age `t0`.
 - `get_breakup_limit` if `True` returns an isogyrochrone with the break-up limit.
 - `tau_d` is set as `False` if using the keyword `fuv`. Otherwise, `tau_d` sets a common disk-lockig duration for all the stars in the isogyrochrone.
@@ -128,9 +128,9 @@ mass, period = spin.isogyrochrone(8., 15e6, fuv=1000., dm=0.05, e=0.01, tau_vis=
 
 ## Observational datasets:
 
-Roquette et al. (2021) compare the models implemented in this package with rolling-percentiles of observed datasets of rotation rates in open clusters. These datasets are processed in the module [ObservedDatasets.py](https://github.com/juliaroquette/FIRE/blob/main/ObservedDatasets.py). Each of the datasets is processed in a class with the name of the observed cluster. 
+Roquette et al. (2021) compare the models implemented in this package with rolling-percentiles of observed datasets of rotation rates in open clusters. These datasets are processed in the module [ObservedDatasets.py](https://github.com/juliaroquette/FIRE/blob/main/ObservedDatasets.py). Each of the datasets is processed in a class with the name of the observed cluster.
 
-- `hPer` 
+- `hPer`
 
 
 
@@ -140,7 +140,7 @@ https://github.com/juliaroquette/FIRE/tree/main/data/observations
 
 ------
 
-## `FUVfunctions.py` module 
+## `FUVfunctions.py` module
 
 The module
 
