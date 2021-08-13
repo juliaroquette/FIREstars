@@ -20,7 +20,7 @@ from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 from astropy.constants import G
 
-from astroFIRE.StarEvolution import BHAC15_MassTrack
+from fire.astroFIRE.StarEvolution import BHAC15_MassTrack
 
 class SpinEvolutionCode:
     """
@@ -44,16 +44,13 @@ class SpinEvolutionCode:
         self.TAU_CZ_o = 13.7798 << u.d # Value updated in the context of B15
                         # 12.9 << u.d
         self.baraffe = BHAC15_MassTrack() #loads the Baraffe+15 grid.
-        if not isinstance(t0, type(1*u.yr)):
-            self.t0 = t0 << u.yr
-        else:
-            self.t0 = t0
+        self.t0 = t0 << u.yr
         # Makes sure that the initial time isn't before the initial time in
         #the BHAC15 grid
         if self.t0.value < 10**np.nanmin(self.baraffe.BHAC15['log_t_yr']):
             self.t0 = 10**np.nanmin(self.baraffe.BHAC15['log_t_yr']) << u.yr
             print('Minimum value must be inside the age range of the Baraffe \
-                   Model, I reset it to {0}'.format(t0.value/1e6))
+                   Model, I reset it to {0}'.format(self.t0.value/1e6))
 
     def interpolateBaraffe(self,t):
         """
@@ -228,12 +225,10 @@ class SpinEvolutionCode:
             t = np.array([t])
         else:
             t = np.array(t)
-        if not isinstance(Omega0, type(self.OMEGA_o)):
-            Omega0 = Omega0 << self.OMEGA_o
+        Omega0 = Omega0 << self.OMEGA_o
         if Omega0 >= self.BreakUp():
             print('Initial rotation faster than Break-Up!')
-        if not isinstance(t, type(u.yr)):
-            t = t << u.yr
+        t = t << u.yr
         if bool(snapshot):
             t_out = np.full(len(t) + 1, np.nan)
             t_out[0] = self.t0.value
@@ -246,8 +241,7 @@ class SpinEvolutionCode:
                 t[i] = (np.nanmax(self.baraffe.Age) - 1e6) << u.yr
                 print('Maximum value must be inside the age range of the \
                       Baraffe Model')
-        if not isinstance(tau_d, type(1*u.yr)):
-            tau_d= tau_d << u.yr
+        tau_d= tau_d << u.yr
         if (tau_d != 0) & (tau_d.value < 1e5):
             print(r'Is $\tau_D$ in the right units?')
         t_ = []
@@ -326,8 +320,7 @@ class SpinEvolutionCode:
             t = np.array([t])
         else:
             t = np.array(t)
-        if not isinstance(t, type(u.yr)):
-            t = t << u.yr
+        t = t << u.yr
         O_crit = []
         for t_ in t:
             self.time_update(t_)
@@ -349,8 +342,7 @@ class SpinEvolutionCode:
         # locally load the grid for M
         self.baraffe.getMassTrack(self.M)
         t = np.array(t)
-        if not isinstance(t, type(u.yr)):
-            t = t << u.yr
+        t = t << u.yr
         O_sat = []
         for t_ in t:
             self.time_update(t_)
@@ -449,8 +441,7 @@ def period2omega(period):
     """
     Convert Period (days) to Omega (OmegaSun)
     """
-    if not isinstance(period, type(u.d)):
-        period = period << u.d
+    period = period << u.d
     OmegaSun = 2.6e-6 << u.Hz
     return (2.*np.pi/(period.to(u.s))/OmegaSun).value
 
@@ -459,8 +450,7 @@ def omega2period(Omega):
     Convert Omega (OmegaSun) to Period (days)
     """
     OmegaSun = 2.6e-6 << u.Hz
-    if not isinstance(Omega, type(u.Hz)):
-        Omega = Omega*OmegaSun
+    Omega = Omega << OmegaSun
     return 2.*np.pi*(u.s).to(u.d)/(Omega.value)
 
 
