@@ -120,14 +120,15 @@ class BHAC15_MassTrack:
 
 
     """
-
+    # These are solar values in the BHAC15 model
+    mass_sun = 1.99e33 << u.g
+    radius_sun = 6.96e10 << u.cm
+    inertia_momentum_sun = 7e53 << u.g*(u.cm**2)
     def __init__(self, full=False):
         import os
         datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            'data/stellar_model/BHAC15/')
-        self.M_o = 1.99e33 << u.g
-        self.R_o = 6.96e10 << u.cm
-        self.I_o = 7e53 << u.g*(u.cm**2)
+
         self.masses = np.array([0.075, 0.08, 0.09, 0.1, 0.2, 0.3, 0.4, 0.5,
                                 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3,1.4])
         self.BHAC15 = {}
@@ -162,8 +163,8 @@ class BHAC15_MassTrack:
             self.Teff = self.BHAC15['Teff'][select_mass]
             self.Mass = self.BHAC15['M_Ms'][select_mass]
             self.Age = 10**self.BHAC15['log_t_yr'][select_mass]
-            self.R = self.BHAC15['R_Rs'][select_mass]
-            self.I = self.BHAC15['I_Is'][select_mass]
+            self.Radius = self.BHAC15['R_Rs'][select_mass]
+            self.InertiaMomentum = self.BHAC15['I_Is'][select_mass]
             if bool(self.full):
                 self.log_Li = self.BHAC15['Log_Li_Li0'][select_mass]
                 self.Tcentral = 10**self.BHAC15['logTc'][select_mass]
@@ -195,12 +196,12 @@ class BHAC15_MassTrack:
             self.Mass = mass
             self.Teff = interpolate('Teff')
             self.Age = 10**interpolate('log_t_yr')
-            self.R = interpolate('R_Rs')
+            self.Radius = interpolate('R_Rs')
             self.k2rad = interpolate('k2rad')
             self.k2conv = interpolate('k2conv')
             self.k2_2=self.k2conv**2+self.k2rad**2
-            self.I=self.k2_2*self.Mass*(self.R**2)
-            if bool(full):
+            self.InertiaMomentum=self.k2_2*self.Mass*(self.R**2)
+            if bool(self.full):
                 self.Lum = interpolate('L_Ls')
                 self.logg = interpolate('g')
                 self.log_Li = interpolate('Log_Li_Li0')
@@ -208,3 +209,19 @@ class BHAC15_MassTrack:
                 self.Rhocentral = 10**interpolate('logROc')
                 self.Mrad = interpolate('Mrad')
                 self.Rrad = interpolate('Rrad')
+    # def interpolateBaraffe(self,t):
+    #     """
+    #     given a time t in yrs, interpolate parameters
+    #     of interest from Baraffe+2015 models
+    #     and update local variables for R, I and T
+    #     --
+    #     input:
+    #     t: time in yrs
+    #     """
+    #     #bouds_error=False will returns np.nan if out of bounds
+    #     self.Radius, self.InertiaMomentum, self.Teff = \
+    #                                       interp1d(self.baraffe.Age,
+    #                                       (self.baraffe.R, self.baraffe.I,
+    #                                        self.baraffe.Teff),
+    #                                          kind='linear', bounds_error=False
+    #                                         )(t)                
