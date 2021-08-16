@@ -3,25 +3,26 @@ Created on Wed Jul 14 14:26:35 2021
 
 @author: jroquette
 """
-import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 
-from matplotlib.colors import LinearSegmentedColormap
 from astropy.table import Table
-from scipy.interpolate import interp1d
 from astropy import units as u
+from matplotlib.colors import LinearSegmentedColormap
+from scipy.interpolate import interp1d
 
- # define the color-table and a normalization used for FUV
- cmapFUV = LinearSegmentedColormap.from_list('mycmap', [
-     (0.0, 'mediumpurple'),
-     (0.2, 'rebeccapurple'),
-     (0.38, 'forestgreen'),
-     (0.58, 'gold'),
-     (0.75, 'orange'),
-     (0.8, 'tab:red'),
-     (1.0, 'maroon')])
- normFUV = mpl.colors.Normalize(vmin=np.log10(1.7), vmax=5)
+
+# define the color-table and a normalization used for FUV
+cmapFUV = LinearSegmentedColormap.from_list('mycmap', [
+          (0.0, 'mediumpurple'),
+          (0.2, 'rebeccapurple'),
+          (0.38, 'forestgreen'),
+          (0.58, 'gold'),
+          (0.75, 'orange'),
+          (0.8, 'tab:red'),
+          (1.0, 'maroon')])
+normFUV = mpl.colors.Normalize(vmin=np.log10(1.7), vmax=5)
 
 def plotCmapFUV(**kargs):
     ax = None
