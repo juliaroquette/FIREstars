@@ -20,7 +20,7 @@ from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 from astropy.constants import G
 
-from fire.astroFIRE.StarEvolution import BHAC15_MassTrack
+from FIREstars.FIREstars.StarEvolution import BHAC15_MassTrack
 
 class SpinEvolutionCode:
     """
@@ -63,9 +63,10 @@ class SpinEvolutionCode:
         """
         #bouds_error=False will returns np.nan if out of bounds
         self.R, self.I, self.T = interp1d(self.baraffe.Age,
-                                          (self.baraffe.R, self.baraffe.I,
-                                           self.baraffe.Teff),
-                                             kind='linear', bounds_error=False
+                                          (self.baraffe.Rarius, 
+                                           self.baraffe.InertiaMomentum,
+                                            self.baraffe.Teff),
+                                              kind='linear', bounds_error=False
                                             )(t)
 
     def update_dIdt(self, t):
@@ -73,7 +74,7 @@ class SpinEvolutionCode:
         calculates the derivative dI/dt at a position t
         and updated the self.dIdt object
         """
-        y = self.baraffe.I*self.M_o*self.R_o**2
+        y = self.baraffe.InertiaMomentum*self.M_o*self.R_o**2
         x = (self.baraffe.Age*u.yr).to(u.s)
         spl = UnivariateSpline(x, y, k=3)
         self.dIdt = spl.derivative(n = 1)(t.to(u.s).value)*(u.cm**2)*u.g/u.s
