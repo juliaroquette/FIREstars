@@ -1,4 +1,4 @@
-# Far-ultraviolet Irradiated Rotational Evolution model (FIRE)
+# Far-ultraviolet Irradiated Rotational Evolution model for low mass stars (FIREstars)
 
 **Author: Julia Roquette**
 
@@ -9,12 +9,12 @@ This package, which is part of the research presented in Roquette et al. (2021),
 
 ## Rotational Evolution model: `SpinEvolution.py`
 
-The module [`SpinEvolution.py`](https://github.com/juliaroquette/FIRE/blob/main/SpinEvolution.py) contains a class `SpinEvolutionCode` which comprises all tools to be used for modelling the rotational evolution of stars. Research notes on the implementation of this class can be found in the jupyter-notebook [jupyter/SpinEvolutionModel.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/SpinEvolutionModel.ipynb).
+The module [`SpinEvolution.py`](https://github.com/juliaroquette/FIREstars/blob/main/SpinEvolution.py) contains a class `SpinEvolutionCode` which comprises all tools to be used for modelling the rotational evolution of stars. Research notes on the implementation of this class can be found in the jupyter-notebook [jupyter/SpinEvolutionModel.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/SpinEvolutionModel.ipynb).
 The model implemented here is based on three assumptions:
 
-1. *Disk-locking:* During the early-PMS phase, stars with disks are locked to their disks and remain with constant rotation. The duration of the disk-locking phase is parametrised using FUV-irradiated disk-dissipation models by [Winter et al. (2020)](https://ui.adsabs.harvard.edu/abs/2020MNRAS.491..903W/abstract) and a tool for reading and using disk-models is implemented as part of [`FUVfunctions.py`](https://github.com/juliaroquette/FIRE/blob/main/FUVfunctions.py). See notes on [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/FUV_TauD.ipynb).
+1. *Disk-locking:* During the early-PMS phase, stars with disks are locked to their disks and remain with constant rotation. The duration of the disk-locking phase is parametrised using FUV-irradiated disk-dissipation models by [Winter et al. (2020)](https://ui.adsabs.harvard.edu/abs/2020MNRAS.491..903W/abstract) and a tool for reading and using disk-models is implemented as part of [`FUVfunctions.py`](https://github.com/juliaroquette/FIREstars/blob/main/FUVfunctions.py). See notes on [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/FUV_TauD.ipynb).
 
-2. *Internal Structure:* The internal structure of stars is described by the stellar evolution models of [Baraffe et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015A%26A...577A..42B/abstract). Tools for reading these models are implemented in [`StarEvolution.py`](https://github.com/juliaroquette/FIRE/blob/main/StarEvolution.py). See notes on REFERENCE.
+2. *Internal Structure:* The internal structure of stars is described by the stellar evolution models of [Baraffe et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015A%26A...577A..42B/abstract). Tools for reading these models are implemented in [`StarEvolution.py`](https://github.com/juliaroquette/FIREstars/blob/main/StarEvolution.py). See notes on REFERENCE.
 
 3. *Magnetised Winds*: At all ages, stars are subject to a wind-torque. The wind-torque adopted is the one by [Matt et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015ApJ...799L..23M/abstract).
 
@@ -22,7 +22,7 @@ The model implemented here is based on three assumptions:
 
 
 ```python
-from astroFIRE.SpinEvolution import SpinEvolutionCode
+from FIREstars.SpinEvolution import SpinEvolutionCode
 ```
 
 Initialize the class by providing an initial time for the model, `t0`, in years.
@@ -54,10 +54,10 @@ Where:
 
 **Example 1**: Spin evolution of a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> star from 0.5 Myr to 4.5 Gyr, with a disk-lifetime of 5 Myr and an initial rotational period of 8 d.
 
-First, to transform the period of 8 d to <img src="https://render.githubusercontent.com/render/math?math=\Omega"> and vice-versa, [`SpinEvolution.py`](https://github.com/juliaroquette/FIRE/blob/main/SpinEvolution.py)  includes the functions `period2omega` and `omega2period`:
+First, to transform the period of 8 d to <img src="https://render.githubusercontent.com/render/math?math=\Omega"> and vice-versa, [`SpinEvolution.py`](https://github.com/juliaroquette/FIREstars/blob/main/SpinEvolution.py)  includes the functions `period2omega` and `omega2period`:
 
 ```python
-from astroFIRE.SpinEvolution import  SpinEvolutionCode, period2omega
+from astroFIREstars.SpinEvolution import  SpinEvolutionCode, period2omega
 spin = SpinEvolutionCode(0.5e6)
 time, omega = spin.dOmegadt(1.0, period2omega(8.), [4.5e9], tau_d=5e6)
 ```
@@ -65,7 +65,7 @@ time, omega = spin.dOmegadt(1.0, period2omega(8.), [4.5e9], tau_d=5e6)
 **Example 2**: Rotational period of a <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> star at the ages 10 Myr, 120 Myr and 4.5 Gyr, considering a disk-lifetime of 5 Myr and an initial rotational period of 8 d at the age 1 Myr.
 
 ```python
-from astroFIRE.SpinEvolution import  SpinEvolutionCode, period2omega
+from FIREstars.SpinEvolution import  SpinEvolutionCode, period2omega
 spin = SpinEvolutionCode(1e6)
 time, omega = spin.dOmegadt(1.0, period2omega(8.), [10e6, 120e6, 4.5e9], tau_d=5e6, snapshot=true)
 ```
@@ -96,7 +96,7 @@ Similarly, the saturation limit used in the wind-torque can also be tracked.
 
 ## Rotational Evolution in Period-Mass space
 
-The class `SpinEvolutionCode` also includes a tool for calculating "isogyrochrones" (see notes in [jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/PeriodMassDiagrams.ipynb)). Isogyrochrones are rotation tracks in period-mass space, in which the rotation of stars in the whole mass range 0.1-1.3 <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> is evolved from a common set of initial conditions to a given age.
+The class `SpinEvolutionCode` also includes a tool for calculating "isogyrochrones" (see notes in [jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/PeriodMassDiagrams.ipynb)). Isogyrochrones are rotation tracks in period-mass space, in which the rotation of stars in the whole mass range 0.1-1.3 <img src="https://render.githubusercontent.com/render/math?math=1\rm{M}_\odot"> is evolved from a common set of initial conditions to a given age.
 
 ```python
 spin = SpinEvolutionCode(t0)
@@ -111,7 +111,7 @@ Where:
 - `initial_period` is the rotational period at the time `t0`.
 - `time` provide a single or multiple ages (in years) at which the isogyrochrones will be estimated.
 - `fuv` set as `False` for a model ignoring the environment. Otherwise, `fuv` is the local far-ultraviolet flux in Habing flux units (<img src="https://render.githubusercontent.com/render/math?math=\rm{G}_0">).
-- `tau_vis` sets the viscous timescale in the disk-dissipation model (see notes in [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/FUV_TauD.ipynb)). Possible values are 1, 2 or 5 Myr.
+- `tau_vis` sets the viscous timescale in the disk-dissipation model (see notes in [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/FUV_TauD.ipynb)). Possible values are 1, 2 or 5 Myr.
 - `initial_age` if `True`, includes the isogyrochrone ate the age `t0`.
 - `get_breakup_limit` if `True` returns an isogyrochrone with the break-up limit.
 - `tau_d` is set as `False` if using the keyword `fuv`. Otherwise, `tau_d` sets a common disk-lockig duration for all the stars in the isogyrochrone.
@@ -128,15 +128,15 @@ mass, period = spin.isogyrochrone(8., 15e6, fuv=1000., dm=0.05, e=0.01, tau_vis=
 
 ## Observational datasets:
 
-Roquette et al. (2021) compare the models implemented in this package with rolling-percentiles of observed datasets of rotation rates in open clusters. These datasets are processed in the module [ObservedDatasets.py](https://github.com/juliaroquette/FIRE/blob/main/ObservedDatasets.py). Each of the datasets is processed in a class with the name of the observed cluster.
+Roquette et al. (2021) compare the models implemented in this package with rolling-percentiles of observed datasets of rotation rates in open clusters. These datasets are processed in the module [ObservedDatasets.py](https://github.com/juliaroquette/FIREstars/blob/main/ObservedDatasets.py). Each of the datasets is processed in a class with the name of the observed cluster.
 
 - `hPer`
 
 
 
-https://github.com/juliaroquette/FIRE/tree/main/data/observations
+https://github.com/juliaroquette/FIREstars/tree/main/data/observations
 
-[jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIRE/blob/main/jupyter/PeriodMassDiagrams.ipynb)
+[jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/PeriodMassDiagrams.ipynb)
 
 ------
 
