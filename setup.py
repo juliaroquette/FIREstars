@@ -1,8 +1,5 @@
 from setuptools import setup, find_packages
 
-
-
-
 setup(
     name='FIREstars',
     version='0.1',
@@ -11,5 +8,6 @@ setup(
 #    license="MIT",
 #    url='https://github.com/juliaroquette/FIREstars',
 #    description='Far-ultraviolet Irradiated Rotational Evolution model for low mass stars',
-    packages=find_packages()
+    packages=find_packages(),
+    include_package_data=True,
 )
