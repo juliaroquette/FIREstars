@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),    
     author = 'Julia Roquette',
     author_email = 'juliaroquette@gmail.com'
-    license_ = "MIT"
+    license = "MIT"
     url = 'https://github.com/juliaroquette/FIREstars'
     description = 'Far-ultraviolet Irradiated Rotational Evolution model for low mass stars'
 )
