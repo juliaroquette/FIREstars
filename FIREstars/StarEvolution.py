@@ -200,7 +200,7 @@ class BHAC15_MassTrack:
             self.k2rad = interpolate('k2rad')
             self.k2conv = interpolate('k2conv')
             self.k2_2=self.k2conv**2+self.k2rad**2
-            self.InertiaMomentum=self.k2_2*self.Mass*(self.R**2)
+            self.InertiaMomentum=self.k2_2*self.Mass*(self.Radius**2)
             if bool(self.full):
                 self.Lum = interpolate('L_Ls')
                 self.logg = interpolate('g')
