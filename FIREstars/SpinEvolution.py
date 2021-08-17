@@ -20,7 +20,7 @@ from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 from astropy.constants import G
 
-from FIREstars.FIREstars.StarEvolution import BHAC15_MassTrack
+from FIREstars.StarEvolution import BHAC15_MassTrack
 
 class SpinEvolutionCode:
     """
@@ -412,7 +412,7 @@ class SpinEvolutionCode:
         else:
             time = np.array(time)
         if bool(fuv):
-            from FIREstars.FIREstars.FUVfunctions import DiskWithFUV
+            from FIREstars.FUVfunctions import DiskWithFUV
             disk = DiskWithFUV()
             get_tauD = lambda x: disk.get_tauD(x, fuv, tau_vis=tau_vis)
         elif bool(tau_d):
