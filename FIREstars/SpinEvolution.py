@@ -444,7 +444,7 @@ def period2omega(period):
     """
     period = period << u.d
     OmegaSun = u.def_unit(r'\Omega_\odot',  2.6*1e-6*u.Hz)
-    return (2.*np.pi/(period.to(u.s))/OmegaSun.decompose()).value
+    return ((2.*np.pi/(period.to(u.s))) << OmegaSun).value
 
 def omega2period(Omega):
     """
