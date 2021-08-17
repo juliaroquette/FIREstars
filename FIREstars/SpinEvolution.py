@@ -63,7 +63,7 @@ class SpinEvolutionCode:
         """
         #bouds_error=False will returns np.nan if out of bounds
         self.R, self.I, self.T = interp1d(self.baraffe.Age,
-                                          (self.baraffe.Rarius, 
+                                          (self.baraffe.Radius, 
                                            self.baraffe.InertiaMomentum,
                                             self.baraffe.Teff),
                                               kind='linear', bounds_error=False
@@ -412,7 +412,7 @@ class SpinEvolutionCode:
         else:
             time = np.array(time)
         if bool(fuv):
-            from fire.FUVfunctions import DiskWithFUV
+            from FIREstars.FIREstars.FUVfunctions import DiskWithFUV
             disk = DiskWithFUV()
             get_tauD = lambda x: disk.get_tauD(x, fuv, tau_vis=tau_vis)
         elif bool(tau_d):
@@ -443,15 +443,15 @@ def period2omega(period):
     Convert Period (days) to Omega (OmegaSun)
     """
     period = period << u.d
-    OmegaSun = 2.6e-6 << u.Hz
-    return (2.*np.pi/(period.to(u.s))/OmegaSun).value
+    OmegaSun = u.def_unit(r'\Omega_\odot',  2.6*1e-6*u.Hz)
+    return (2.*np.pi/(period.to(u.s))/OmegaSun.decompose()).value
 
 def omega2period(Omega):
     """
     Convert Omega (OmegaSun) to Period (days)
     """
-    OmegaSun = 2.6e-6 << u.Hz
+    OmegaSun = u.def_unit(r'\Omega_\odot',  2.6*1e-6*u.Hz)
     Omega = Omega << OmegaSun
-    return 2.*np.pi*(u.s).to(u.d)/(Omega.value)
+    return (2.*np.pi*(u.s).to(u.d)/(Omega.decompose())).value
 
 
