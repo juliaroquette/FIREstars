@@ -6,6 +6,23 @@
 This package, which is part of the research presented in Roquette et al. (2021), includes a compilation of tools for computing rotational evolution models of stars evolving under the irradiation of far-ultraviolet radiation. The package can be used to derive the rotational evolution of stars in the mass range 0.1-1.3<img src="https://render.githubusercontent.com/render/math?math=\rm{M}_\odot">.
 
 -----------
+## Installation
+
+This package requires a `Python3` installation with [`astropy`](https://www.astropy.org/), [`matplotlib`](https://matplotlib.org/), [`numpy`](https://numpy.org/), [`pandas`](https://pandas.pydata.org/) and [`scipy`](https://www.scipy.org/).
+
+To install, first clone this repository:
+
+```bat
+git clone https://github.com/juliaroquette/FIREstars.git
+```
+
+Next, use a terminal to access the repository directory and use `pip` to install:
+
+```bat
+pip install .
+```
+
+-----------
 
 ## Rotational Evolution model: `SpinEvolution.py`
 
