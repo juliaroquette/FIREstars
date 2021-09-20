@@ -27,6 +27,16 @@ class SpinEvolutionCode:
     My spin evolution code
 
     """
+    CHI = 10.
+    P = 2.
+    M_o = 1.99e33 << u.g
+    OMEGA_o = u.def_unit(r'\Omega_\odot',  2.6*1e-6*u.Hz)
+    R_o = 6.96e10 << u.cm
+    I_o = 7e53 << u.g*(u.cm**2)
+    TIME_o = 4.55e9 << u.yr
+    TAU_CZ_o = 13.7798 << u.d # Value updated in the context of B15
+                        # 12.9 << u.d
+    
     def __init__(self, t0):
         """
         M should be in solar masses
@@ -34,15 +44,7 @@ class SpinEvolutionCode:
         Omegao should be in days
         """
         #define constants
-        self.CHI = 10.
-        self.P = 2.
-        self.M_o = 1.99e33 << u.g
-        self.OMEGA_o = u.def_unit(r'\Omega_\odot',  2.6*1e-6*u.Hz)
-        self.R_o = 6.96e10 << u.cm
-        self.I_o = 7e53 << u.g*(u.cm**2)
-        self.TIME_o = 4.55e9 << u.yr
-        self.TAU_CZ_o = 13.7798 << u.d # Value updated in the context of B15
-                        # 12.9 << u.d
+
         self.baraffe = BHAC15_MassTrack() #loads the Baraffe+15 grid.
         self.t0 = t0 << u.yr
         # Makes sure that the initial time isn't before the initial time in
@@ -268,7 +270,7 @@ class SpinEvolutionCode:
                 tk_o = tau_d
             #initiate the parameters
             self.time_update(tk_o)
-            dt=self.get_dt(Omega0, e, wind = wind, structure=structure)
+            dt = self.get_dt(Omega0, e, wind = wind, structure=structure)
             for T in t[n:]:
                 while tk_o + dt < T:
                     O, tk = self.Euler_(self.f, Omega0, tk_o, dt, wind=wind,
