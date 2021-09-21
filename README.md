@@ -31,7 +31,7 @@ The model implemented here is based on three assumptions:
 
 1. *Disk-locking:* During the early-PMS phase, stars with disks are locked to their disks and remain with constant rotation. The duration of the disk-locking phase is parametrised using FUV-irradiated disk-dissipation models by [Winter et al. (2020)](https://ui.adsabs.harvard.edu/abs/2020MNRAS.491..903W/abstract) and a tool for reading and using disk-models is implemented as part of [`FUVfunctions.py`](https://github.com/juliaroquette/FIREstars/blob/main/FIREstars/FUVfunctions.py). See notes on [jupyter/FUV_TauD.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/FUV_TauD.ipynb).
 
-2. *Internal Structure:* The internal structure of stars is described by the stellar evolution models of [Baraffe et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015A%26A...577A..42B/abstract). Tools for reading these models are implemented in [`StarEvolution.py`](https://github.com/juliaroquette/FIREstars/blob/main/FIREstars/StarEvolution.py). See notes on REFERENCE.
+2. *Internal Structure:* The internal structure of stars is described by the stellar evolution models of [Baraffe et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015A%26A...577A..42B/abstract). Tools for reading these models are implemented in [`StarEvolution.py`](https://github.com/juliaroquette/FIREstars/blob/main/FIREstars/StarEvolution.py). See notes on [jupyter/StellarEvolution_BHAC15.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/StellarEvolution_BHAC15.ipynb).
 
 3. *Magnetised Winds*: At all ages, stars are subject to a wind-torque. The wind-torque adopted is the one by [Matt et al. (2015)](https://ui.adsabs.harvard.edu/abs/2015ApJ...799L..23M/abstract).
 
@@ -74,7 +74,7 @@ Where:
 First, to transform the period of 8 d to <img src="https://render.githubusercontent.com/render/math?math=\Omega"> and vice-versa, [`SpinEvolution.py`](https://github.com/juliaroquette/FIREstars/blob/main/FIREstars/SpinEvolution.py)  includes the functions `period2omega` and `omega2period`:
 
 ```python
-from astroFIREstars.SpinEvolution import  SpinEvolutionCode, period2omega
+from FIREstars.SpinEvolution import  SpinEvolutionCode, period2omega
 spin = SpinEvolutionCode(0.5e6)
 time, omega = spin.dOmegadt(1.0, period2omega(8.), [4.5e9], tau_d=5e6)
 ```
@@ -142,27 +142,4 @@ mass, period = spin.isogyrochrone(8., 15e6, fuv=1000., dm=0.05, e=0.01, tau_vis=
 ```
 
 ------
-
-## Observational datasets:
-
-Roquette et al. (2021) compare the models implemented in this package with rolling-percentiles of observed datasets of rotation rates in open clusters. These datasets are processed in the module [ObservedDatasets.py](https://github.com/juliaroquette/FIREstars/blob/main/FIREstars/ObservedDatasets.py). Each of the datasets is processed in a class with the name of the observed cluster.
-
-- `hPer`
-
-
-
-https://github.com/juliaroquette/FIREstars/tree/main/data/observations
-
-[jupyter/PeriodMassDiagrams.ipynb](https://github.com/juliaroquette/FIREstars/blob/main/jupyter/PeriodMassDiagrams.ipynb)
-
-------
-
-## `FUVfunctions.py` module
-
-The module
-
-------
-
-## `StarEvolution.py` module
-
 
